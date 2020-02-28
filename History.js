@@ -19,7 +19,8 @@ const History = () => {
 const myStyle = StyleSheet.create({
      history:{
         width:'90%',
-        marginTop:20
+        marginTop:20,
+        padding:5
     }
 })
 

@@ -1,7 +1,8 @@
 import React, {useEffect} from 'react'
-import {View, StyleSheet, Text} from 'react-native'
+import {View, StyleSheet, Text, ScrollView} from 'react-native'
 import { BackHandler } from 'react-native';
 import History from './History'
+import Transaction from './Transaction';
 const Home = ({navigation}) => {
 
    useEffect(()=>{
@@ -10,6 +11,7 @@ const Home = ({navigation}) => {
 
 
     return (
+        <ScrollView>
         <View style={myStyle.body}>
             <View style={myStyle.balance}>
               <Text style={{fontSize:22}}>
@@ -33,7 +35,9 @@ const Home = ({navigation}) => {
             {/* History component */}
             <History/>
             {/* Input component */}
+            <Transaction/>
         </View>
+        </ScrollView>
     )
 }
 

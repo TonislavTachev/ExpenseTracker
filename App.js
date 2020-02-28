@@ -20,13 +20,15 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import Loading from './Loading';
-import Home from './Home'
+import Home from './Home';
+import TransactionState from './transactionContext/TransactionState';
 
 const Stack = createStackNavigator();
 
 const App: () => React$Node = () => {
   return (
    <NavigationContainer>
+   <TransactionState>
    <Stack.Navigator>
    <Stack.Screen name='Loading' component={Loading} options={{
      headerShown:false
@@ -36,6 +38,7 @@ const App: () => React$Node = () => {
       title:'Dashboad'
     }}></Stack.Screen>
    </Stack.Navigator>
+   </TransactionState>
    </NavigationContainer>
   );
 };
