@@ -21,7 +21,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import Loading from './Loading';
 import Home from './Home';
-import TransactionState from './transactionContext/TransactionState';
+import TransactionState from './TransactionContext/TransactionState';
 
 const Stack = createStackNavigator();
 

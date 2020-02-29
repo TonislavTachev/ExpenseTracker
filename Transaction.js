@@ -1,6 +1,52 @@
-import React from 'react'
-import {StyleSheet, View, Text, TextInput, Button, TouchableOpacity} from 'react-native'
-const Transaction = () => {
+import React, {useState, useContext, useEffect} from 'react'
+import {StyleSheet, View, Text, TextInput, Button, TouchableOpacity, ToastAndroid} from 'react-native';
+import TransactionContext from './TransactionContext/transactionContext';
+const Transaction = () => { 
+
+
+    const transactionContext = useContext(TransactionContext);
+    const {createExpense, getExpense} = transactionContext;
+  
+    const [description, setDesc] = useState('');
+    const [value, setValue] = useState('');
+    const [obj, setObj] = useState({
+        description:'',
+        value:''
+    });
+
+
+    const onChange = (text) =>{
+            setDesc(text);
+    }
+  
+    const onChangeValue = (value) =>{
+        setValue(value);
+    }
+
+    const Submit = () =>{
+
+        if(value === '' && description === ''){
+            ToastAndroid.showWithGravity('Please use the required fields', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+        } else if (value === ''){
+           ToastAndroid.showWithGravity('Please insert a value', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+        } else if(description === ''){
+            ToastAndroid.showWithGravity('Please insert a description', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+        } else {
+            //handle whether the user entered a profit or an expense
+            if(value.slice(0,1) === '+'){
+                createExpense(description, value);
+                setDesc('');
+                setValue('');
+            } else if(value.slice(0,1) === '-'){
+                createExpense(description, value);
+                setDesc('');
+                setValue('');
+            }  else {
+                ToastAndroid.showWithGravity('Please insert as "-50" or "+50" ', ToastAndroid.LONG, ToastAndroid.BOTTOM);
+            }
+        }
+    }
+
     return (
         <View style={myStyle.body}>
              <Text style={{marginBottom:10, fontSize:20}}>Add a new transaction</Text>
@@ -12,12 +58,12 @@ const Transaction = () => {
                 marginBottom:5}}
                 />
              <Text style={{fontWeight:'bold'}}>Description</Text>
-             <TextInput style={myStyle.input} placeholder="Went grocery shopping..."/>
+             <TextInput style={myStyle.input} onChangeText={onChange} value={description} placeholder="Went grocery shopping..."/>
              <Text style={{marginTop:10, fontWeight:'bold'}}>Amount</Text>
              <View style={myStyle.tip}><Text style={{fontSize:16}}>(negative - expense, positive - income)</Text></View>
-             <TextInput style={myStyle.input} placeholder="0"/>
+             <TextInput style={myStyle.input} placeholder="0" onChangeText={onChangeValue} value={value}/>
              <View style={myStyle.btn}>
-               <TouchableOpacity style={myStyle.realBtn}>
+               <TouchableOpacity style={myStyle.realBtn} onPress={Submit}>
                   <Text style={{textAlign:'center', color:'#fff'}}>SUBMIT</Text>
                </TouchableOpacity>
              </View>
