@@ -1,14 +1,22 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useContext} from 'react'
 import {View, StyleSheet, Text, ScrollView} from 'react-native'
 import { BackHandler } from 'react-native';
 import History from './History'
 import Transaction from './Transaction';
+import Progressbar from './Progressbar';
+import TransactionContext from './TransactionContext/transactionContext';
 const Home = ({navigation}) => {
 
-   useEffect(()=>{
-       BackHandler.addEventListener('hardwareBackPress', function() {return true}) 
-   },[])
+   const transactionContext = useContext(TransactionContext);
+   const {calculateBalance, balance,getBalance} = transactionContext;
 
+   useEffect(()=>{
+       BackHandler.addEventListener('hardwareBackPress', function() {return true});
+   },[])
+  
+//   if(balance === null){
+//       return <Progressbar/>
+//   }
 
     return (
         <ScrollView>
@@ -17,19 +25,19 @@ const Home = ({navigation}) => {
               <Text style={{fontSize:22}}>
                Your balance
               </Text>
-              <Text style={{fontSize:30, marginTop:3}}>
-              420$
+              <Text>
+              $
               </Text>
             </View>
 
             <View style={myStyle.dash}>
                <View  style={myStyle.line2}>
                  <Text style={{fontSize:22}}>PROFIT</Text>
-                  <Text style={{fontSize:20, marginTop:5, color:"#2EC4B6"}}>450.00</Text>
+                  <Text style={{fontSize:20, marginTop:5, color:"#20BF55"}}>$</Text>
                </View>
                <View style={myStyle.line}>
                <Text style={{fontSize:22}}>EXPENSE</Text>
-               <Text style={{fontSize:20, marginTop:5,color:"#E71D36"}}>30.00</Text>
+               <Text style={{fontSize:20, marginTop:5,color:"#F71735"}}>$</Text>
               </View>
             </View>
             {/* History component */}

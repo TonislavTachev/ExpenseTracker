@@ -15,7 +15,10 @@ const History = () => {
 
    if(loading === true){
 
-       return <View style={myStyle.margin}><Progressbar/></View>
+       return <View style={myStyle.margin}>
+       <Text style={{marginTop:5, marginBottom:5}}>No transactions currently..</Text>
+       <Progressbar/>
+       </View>
    }
 
     return (
@@ -26,8 +29,10 @@ const History = () => {
                  borderBottomColor: '#DDDDDD',
                  elevation:1,
                 borderBottomWidth: 0.5,
+                marginBottom:11
                      }}
                 />
+                {expense.map(el => <Item key={el._id} item={el}/>)}
         </View>
     )
 }

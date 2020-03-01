@@ -5,7 +5,7 @@ const expenses = require('../modules/Expenses');
 //get expenses
 router.get('/', async(req,res)=>{
     const arrayOfExpenses = await expenses.find({});
-
+    
     res.status(200).json({
         data:arrayOfExpenses
     })

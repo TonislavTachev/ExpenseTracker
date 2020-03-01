@@ -1,11 +1,12 @@
 import React, {useState, useContext, useEffect} from 'react'
 import {StyleSheet, View, Text, TextInput, Button, TouchableOpacity, ToastAndroid} from 'react-native';
 import TransactionContext from './TransactionContext/transactionContext';
+import Progressbar from './Progressbar';
 const Transaction = () => { 
 
 
     const transactionContext = useContext(TransactionContext);
-    const {createExpense, getExpense} = transactionContext;
+    const {createExpense, getExpense, calculateBalance,getBalance, balance} = transactionContext;
   
     const [description, setDesc] = useState('');
     const [value, setValue] = useState('');
@@ -13,6 +14,10 @@ const Transaction = () => {
         description:'',
         value:''
     });
+
+    useEffect(()=>{
+         getBalance();
+    },[]);
 
 
     const onChange = (text) =>{
@@ -37,16 +42,21 @@ const Transaction = () => {
                 createExpense(description, value);
                 setDesc('');
                 setValue('');
+                calculateBalance(balance._id);
             } else if(value.slice(0,1) === '-'){
                 createExpense(description, value);
                 setDesc('');
                 setValue('');
+                calculateBalance(balance._id);
             }  else {
                 ToastAndroid.showWithGravity('Please insert as "-50" or "+50" ', ToastAndroid.LONG, ToastAndroid.BOTTOM);
             }
         }
     }
-
+   if(balance === null){
+       return <Progressbar/>
+   }
+   
     return (
         <View style={myStyle.body}>
              <Text style={{marginBottom:10, fontSize:20}}>Add a new transaction</Text>
@@ -83,7 +93,9 @@ const myStyle = StyleSheet.create({
        backgroundColor:'white',
        elevation:2,
        marginTop:10,
-       padding:5
+       padding:5,
+       height:50,
+       fontSize:17
    },
    tip:{
        borderBottomColor:'#EEEEEE',
@@ -105,7 +117,8 @@ const myStyle = StyleSheet.create({
    realBtn:{
       backgroundColor:'#78D5D7',
       width:'100%',
-      padding:5
+      padding:5,
+      height:35
    }
 })
 
