@@ -4,16 +4,16 @@ import TransactionContext from './TransactionContext/transactionContext';
 import Progressbar from './Progressbar';
 import Item from './Item';
 ;
-const History = () => {
+const History = props => {
     const transactionContext = useContext(TransactionContext);
-    const {expense,loading,getExpense} = transactionContext
+    const {expense,loading,getExpense, deletedLoading} = transactionContext
+    const {navigation} = props;
 
     useEffect(()=>{
         getExpense();
-        console.log(expense);
     },[])
 
-   if(loading === true){
+   if(loading === true || expense.length === 0){
 
        return <View style={myStyle.margin}>
        <Text style={{marginTop:5, marginBottom:5}}>No transactions currently..</Text>
@@ -21,6 +21,7 @@ const History = () => {
        </View>
    }
 
+    console.log(expense);
     return (
         <View style={myStyle.history}>
                <Text style={{marginBottom:10, fontSize:20}}>History</Text>
@@ -32,7 +33,7 @@ const History = () => {
                 marginBottom:11
                      }}
                 />
-                {expense.map(el => <Item key={el._id} item={el}/>)}
+                {expense.map(el => <Item key={el._id} item={el} navigation={navigation}/>)}
         </View>
     )
 }

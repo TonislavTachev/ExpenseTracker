@@ -2,13 +2,15 @@ import React, {useReducer} from 'react'
 import TransactionReducer from './TransactionReducer';
 import TransactionContext from './transactionContext';
 import axios from 'axios';
-import {ADD_EXPENSE, GET_EXPENSE, GET_PROFIT, DELETE_PROFIT, DELETE_EXPENSE, CALCULATE_BALANCE, GET_LATEST_BALANCE} from '../types'
+import {ADD_EXPENSE, GET_EXPENSE, GET_PROFIT, DELETE_PROFIT, DELETE_EXPENSE, CALCULATE_BALANCE, GET_LATEST_BALANCE, UPDATE_BALANCE} from '../types'
 const TransactionState = props => {
 
     const initialState = {
         expense:[],
         balance:null,
         loading:true,
+        balanceLoading:true,
+        deletedLoading:true
     }
     
     const [state, dispatch] = useReducer(TransactionReducer,initialState); 
@@ -58,12 +60,13 @@ const TransactionState = props => {
                 }
             })
             const balanceObj = {
+                    id:id,
                     profit:profit,
                     expense:expense,
                     balance: profit-expense
             }
             
-            createBalance(balanceObj);
+            updateBalance(balanceObj);
         } catch (error) {
             
         }
@@ -72,8 +75,8 @@ const TransactionState = props => {
     const getBalance = async() =>{
         try{
            const res = await axios.get('http://192.168.0.14:5000/calc/balance');
-           console.log(res.data.data[0]);
-            dispatch({type:GET_LATEST_BALANCE, payload:res.data.data[0]});
+           console.log(res.data[0]);
+            dispatch({type:GET_LATEST_BALANCE, payload:res.data[0]});
         } catch(error){
 
         }
@@ -92,15 +95,43 @@ const TransactionState = props => {
         }
     }
 
+    const updateBalance = async(balance) =>{
+        console.log(balance.id);
+        try {
+            const config = {
+                'Content-Type' : 'application/json'
+            }
+
+           const res = await axios.put(`http://192.168.0.14:5000/calc/balance/update/${balance.id}`, balance, config);
+           console.log(res.data);
+         dispatch({type:UPDATE_BALANCE, payload:res.data})
+        } catch (error) {
+            
+        }
+    }
+
+    const deleteBalance = async(id) =>{
+        try {
+               dispatch({type:DELETE_EXPENSE, payload:id});
+               await axios.delete(`http://192.168.0.14:5000/calc/expenses/delete/${id}`);
+              
+        } catch (error) {
+            
+        }
+    }
+
     return (
         <TransactionContext.Provider value={{
            expense: state.expense,
            loading: state.loading,
            balance: state.balance,
+           balanceLoading:state.balanceLoading,
+            deletedLoading:state. deletedLoading,
            createExpense,
            getExpense,
            calculateBalance,
-           getBalance
+           getBalance,
+           deleteBalance
         }}>
             {props.children}
         </TransactionContext.Provider>

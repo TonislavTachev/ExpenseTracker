@@ -5,18 +5,22 @@ import History from './History'
 import Transaction from './Transaction';
 import Progressbar from './Progressbar';
 import TransactionContext from './TransactionContext/transactionContext';
-const Home = ({navigation}) => {
+const Home = (props) => {
 
    const transactionContext = useContext(TransactionContext);
-   const {calculateBalance, balance,getBalance} = transactionContext;
+   const {navigation} = props
+   const {calculateBalance, balance, getBalance, balanceLoading} = transactionContext;
 
    useEffect(()=>{
        BackHandler.addEventListener('hardwareBackPress', function() {return true});
+      
+          getBalance();
+     
    },[])
   
-//   if(balance === null){
-//       return <Progressbar/>
-//   }
+  if(balance === null && balanceLoading === true){
+      return <Progressbar/>
+  }
 
     return (
         <ScrollView>
@@ -25,25 +29,25 @@ const Home = ({navigation}) => {
               <Text style={{fontSize:22}}>
                Your balance
               </Text>
-              <Text>
-              $
+              <Text style={balance.balance > 0 ? {color:'#20BF55', fontSize:25} : {color:"#F71735", fontSize:25}}>
+              {balance.balance} $
               </Text>
             </View>
 
             <View style={myStyle.dash}>
                <View  style={myStyle.line2}>
                  <Text style={{fontSize:22}}>PROFIT</Text>
-                  <Text style={{fontSize:20, marginTop:5, color:"#20BF55"}}>$</Text>
+                  <Text style={{fontSize:20, marginTop:5, color:"#20BF55"}}>{balance.profit} $</Text>
                </View>
                <View style={myStyle.line}>
                <Text style={{fontSize:22}}>EXPENSE</Text>
-               <Text style={{fontSize:20, marginTop:5,color:"#F71735"}}>$</Text>
+               <Text style={{fontSize:20, marginTop:5,color:"#F71735"}}>{balance.expense} $</Text>
               </View>
             </View>
             {/* History component */}
-            <History/>
+            <History navigation={navigation}/>
             {/* Input component */}
-            <Transaction/>
+            <Transaction balance={balance}/>
         </View>
         </ScrollView>
     )

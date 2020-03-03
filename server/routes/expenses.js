@@ -31,4 +31,10 @@ res.status(200).json({
 
 })
 
+//delete expense
+router.delete('/delete/:id', async(req,res)=>{
+    await expenses.findByIdAndDelete(req.params.id);
+    res.status(200);
+})
+
 module.exports = router;

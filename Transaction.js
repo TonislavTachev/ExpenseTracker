@@ -2,11 +2,11 @@ import React, {useState, useContext, useEffect} from 'react'
 import {StyleSheet, View, Text, TextInput, Button, TouchableOpacity, ToastAndroid} from 'react-native';
 import TransactionContext from './TransactionContext/transactionContext';
 import Progressbar from './Progressbar';
-const Transaction = () => { 
-
+const Transaction = props => { 
+    const {balance} = props;
 
     const transactionContext = useContext(TransactionContext);
-    const {createExpense, getExpense, calculateBalance,getBalance, balance} = transactionContext;
+    const {createExpense, getExpense, calculateBalance} = transactionContext;
   
     const [description, setDesc] = useState('');
     const [value, setValue] = useState('');
@@ -16,7 +16,7 @@ const Transaction = () => {
     });
 
     useEffect(()=>{
-         getBalance();
+    
     },[]);
 
 
@@ -53,9 +53,6 @@ const Transaction = () => {
             }
         }
     }
-   if(balance === null){
-       return <Progressbar/>
-   }
    
     return (
         <View style={myStyle.body}>

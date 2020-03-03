@@ -2,7 +2,6 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
 import {
   SafeAreaView,
   StyleSheet,
@@ -22,22 +21,38 @@ import {
 import Loading from './Loading';
 import Home from './Home';
 import TransactionState from './TransactionContext/TransactionState';
+import HistoryModal from './HistoryModal';
+const MainStack = createStackNavigator();
+const RootStack = createStackNavigator();
 
-const Stack = createStackNavigator();
+function MainStackScreen() {
+  return (
+   <MainStack.Navigator>
+      <MainStack.Screen name='Loading' component={Loading} options={{
+     headerShown:false
+   }} />
+      <MainStack.Screen  name='Home' component={Home}  options={{
+      headerLeft:null,
+      title:'Dashboad'
+    }} />
+    </MainStack.Navigator>
+  )
+}
+
 
 const App: () => React$Node = () => {
   return (
    <NavigationContainer>
    <TransactionState>
-   <Stack.Navigator>
-   <Stack.Screen name='Loading' component={Loading} options={{
+   <RootStack.Navigator>
+   <RootStack.Screen name='Main' component={MainStackScreen} options={{
      headerShown:false
-   }}></Stack.Screen>
-    <Stack.Screen name='Home' component={Home}  options={{
+   }}></RootStack.Screen>
+    <RootStack.Screen name='Modal' component={HistoryModal}  options={{
       headerLeft:null,
       title:'Dashboad'
-    }}></Stack.Screen>
-   </Stack.Navigator>
+    }}></RootStack.Screen>
+   </RootStack.Navigator>
    </TransactionState>
    </NavigationContainer>
   );

@@ -1,14 +1,24 @@
-import React, {useContext, useEffect} from 'react'
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
+import React, {useContext, useEffect, useState} from 'react'
+import {View, Text, StyleSheet, TouchableOpacity, Button} from 'react-native'
+import HistoryModal from './HistoryModal';
+import TransactionContext from './TransactionContext/transactionContext'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 const Item = props => {
-    const {item} = props;
+    const {item, navigation} = props;
+    const transactionContext = useContext(TransactionContext);
+    const {deleteBalance} = transactionContext;
 
+
+    const removeItem = () =>{
+     deleteBalance(item._id);
+    }
     return (
-        <TouchableOpacity style={[item.value.slice(0,1) === '-' ? myStyles.expense : myStyles.profit]}>
+        <View style={[item.value.slice(0,1) === '-' ? myStyles.expense : myStyles.profit]}>
             <Text style={myStyles.text}>{item.typeOfExpense}</Text>
-            <Text style={myStyles.text}>{item.value} $</Text>
-        </TouchableOpacity>
+            <Text style={myStyles.text}>{item.value} $ </Text>
+            <Button title="Delete" onPress={removeItem}/>
+        </View>
     )
 }
 

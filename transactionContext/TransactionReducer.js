@@ -1,5 +1,4 @@
-import {ADD_EXPENSE,GET_PROFIT, GET_EXPENSE, DELETE_PROFIT, DELETE_EXPENSE, CALCULATE_BALANCE, GET_LATEST_BALANCE} from '../types'
-
+import {ADD_EXPENSE,GET_PROFIT, GET_EXPENSE, DELETE_PROFIT, DELETE_EXPENSE, CALCULATE_BALANCE, GET_LATEST_BALANCE, UPDATE_BALANCE} from '../types'
 
 export default (state,action) =>{
   
@@ -20,9 +19,21 @@ export default (state,action) =>{
          case GET_LATEST_BALANCE:
          return {
              ...state,
-             balance:action.payload
+             balance:action.payload,
+             balanceLoading:false
          }
-         break;
+         case UPDATE_BALANCE:
+         return {
+             ...state,
+             balance:action.payload,
+             balanceLoading:false
+         }
+         case DELETE_EXPENSE:
+         return {
+             ...state,
+             expense: state.expense.filter(item => item._id !== action.payload),
+             loading:false
+         }
          default:
              break;
      }
