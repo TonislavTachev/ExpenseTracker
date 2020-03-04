@@ -5,6 +5,7 @@ import History from './History'
 import Transaction from './Transaction';
 import Progressbar from './Progressbar';
 import TransactionContext from './TransactionContext/transactionContext';
+import * as Animatable from 'react-native-animatable';
 const Home = (props) => {
 
    const transactionContext = useContext(TransactionContext);
@@ -29,19 +30,19 @@ const Home = (props) => {
               <Text style={{fontSize:22}}>
                Your balance
               </Text>
-              <Text style={balance.balance > 0 ? {color:'#20BF55', fontSize:25} : {color:"#F71735", fontSize:25}}>
+              <Animatable.Text animation="fadeIn" style={balance.balance > 0 ? {color:'#20BF55', fontSize:25} : {color:"#F71735", fontSize:25}}>
               {balance.balance} $
-              </Text>
+              </Animatable.Text>
             </View>
 
             <View style={myStyle.dash}>
                <View  style={myStyle.line2}>
                  <Text style={{fontSize:22}}>PROFIT</Text>
-                  <Text style={{fontSize:20, marginTop:5, color:"#20BF55"}}>{balance.profit} $</Text>
+                  <Animatable.Text animation="fadeIn" style={{fontSize:20, marginTop:5, color:"#20BF55"}}>{balance.profit} $</Animatable.Text>
                </View>
                <View style={myStyle.line}>
                <Text style={{fontSize:22}}>EXPENSE</Text>
-               <Text style={{fontSize:20, marginTop:5,color:"#F71735"}}>{balance.expense} $</Text>
+               <Animatable.Text animation="fadeIn" style={{fontSize:20, marginTop:5,color:"#F71735"}}>{balance.expense} $</Animatable.Text>
               </View>
             </View>
             {/* History component */}

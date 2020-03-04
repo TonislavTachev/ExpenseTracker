@@ -2,23 +2,28 @@ import React, {useContext, useEffect, useState} from 'react'
 import {View, Text, StyleSheet, TouchableOpacity, Button} from 'react-native'
 import HistoryModal from './HistoryModal';
 import TransactionContext from './TransactionContext/transactionContext'
-import Icon from 'react-native-vector-icons/Ionicons'
+import Icon from 'react-native-vector-icons/Ionicons';
+import * as Animatable from 'react-native-animatable';
 
 const Item = props => {
     const {item, navigation} = props;
     const transactionContext = useContext(TransactionContext);
     const {deleteBalance} = transactionContext;
-
+    const [isFadedOut, setFadeOut] = useState(false);
 
     const removeItem = () =>{
+     setFadeOut(true);
      deleteBalance(item._id);
+     setFadeOut(false);
     }
+
+    const animationFadeOut = isFadedOut ? {animation :"fadeOut", duration:'1000'} : {animation:'fadeIn'};
     return (
-        <View style={[item.value.slice(0,1) === '-' ? myStyles.expense : myStyles.profit]}>
+        <Animatable.View {...animationFadeOut} direction="alternate" style={[item.value.slice(0,1) === '-' ? myStyles.expense : myStyles.profit]}>
             <Text style={myStyles.text}>{item.typeOfExpense}</Text>
             <Text style={myStyles.text}>{item.value} $ </Text>
             <Button title="Delete" onPress={removeItem}/>
-        </View>
+        </Animatable.View>
     )
 }
 
